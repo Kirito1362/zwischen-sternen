@@ -1,0 +1,84 @@
+import { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
+
+const messages = {
+  sad: [
+    "Auch die dunkelste Nacht endet, und die Sonne wird wieder scheinen.",
+    "Du bist nicht allein – irgendwo denkt jemand gerade an dich.",
+    "Selbst Sterne brauchen Dunkelheit, um zu leuchten."
+  ],
+  hope: [
+    "Jeder Tag ist ein neuer Anfang, so unendlich wie das Universum.",
+    "Du trägst Licht in dir – auch wenn du es gerade nicht siehst.",
+    "Hoffnung ist wie ein Stern: Man sieht sie am besten, wenn es dunkel ist."
+  ],
+  lonely: [
+    "Zwischen all den Sternen da draußen ist dein Licht einzigartig.",
+    "Manchmal fühlt sich das Universum leer an – aber ich bin da.",
+    "Verbundenheit kennt keine Entfernung – ich bin bei dir, immer."
+  ]
+};
+
+export default function SpaceComfortApp() {
+  const [selected, setSelected] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleClick = (category) => {
+    const msgs = messages[category];
+    const randomMsg = msgs[Math.floor(Math.random() * msgs.length)];
+    setSelected(category);
+    setMessage(randomMsg);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-black to-indigo-900 text-white flex flex-col items-center justify-center p-4 space-y-6">
+      <motion.h1
+        className="text-3xl font-semibold text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        Zwischen Sternen und Gedanken
+      </motion.h1>
+
+      {!message && (
+        <div className="space-y-4 text-center">
+          <p className="text-lg">Was fühlst du gerade?</p>
+          <div className="space-x-4">
+            <Button variant="outline" onClick={() => handleClick('sad')}>
+              🌑 Dir geht’s nicht gut
+            </Button>
+            <Button variant="outline" onClick={() => handleClick('hope')}>
+              🌠 Du brauchst Hoffnung
+            </Button>
+            <Button variant="outline" onClick={() => handleClick('lonely')}>
+              🌌 Du fühlst dich allein
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {message && (
+        <motion.div
+          className="max-w-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
+            <CardContent>
+              <p className="text-lg italic text-center">“{message}”</p>
+              <div className="mt-4 text-center">
+                <Button onClick={() => setMessage('')} variant="ghost">
+                  🔙 Zurück
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+    </div>
+  );
+}
